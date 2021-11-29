@@ -5,7 +5,7 @@ const title = prompt("Как называется ваш проект?");
 
 const screens = prompt("Какие типы экранов нужно разработать?");
 const screenPrice = +prompt("Сколько будет стоить такая работа?");
-const adaptive = prompt("Нужен ли адаптив на сайте?");
+const adaptive = confirm("Нужен ли адаптив на сайте?");
 const service1 = prompt("Какой дополнительный тип услуги нужен?");
 const servicePrice1 = +prompt("Сколько это будет стоить?")
 const service2 = prompt("Какой дополнительный тип услуги нужен?");
