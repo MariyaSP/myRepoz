@@ -1,3 +1,4 @@
+'use strict';
 const rollback = 20;
 
 let title = prompt("Как называется ваш проект?").trim();
@@ -24,7 +25,6 @@ function getRollbackMessage() {
             return "Скидка не предусмотрена";
         case fullPrice < 0:
             return "Что-то пошло не так";
-
     }
 }
 
@@ -43,7 +43,6 @@ const servicePercentPrice = function getServicePercentPrices() {
 }
 
 console.log(getTitle(title));
-
 console.log("title " + typeof title, ", fullPrice " + typeof fullPrice, ", adaptive " + typeof adaptive);
 console.log(screens.toLocaleLowerCase().split(", "));
 console.log("Скидка: " + getRollbackMessage());
