@@ -1,44 +1,51 @@
-let rollback = 20;
+const rollback = 20;
 
-
-const title = prompt("Как называется ваш проект?");
-
+let title = prompt("Как называется ваш проект?").trim();
 const screens = prompt("Какие типы экранов нужно разработать?");
 const screenPrice = +prompt("Сколько будет стоить такая работа?");
 const adaptive = confirm("Нужен ли адаптив на сайте?");
 const service1 = prompt("Какой дополнительный тип услуги нужен?");
 const servicePrice1 = +prompt("Сколько это будет стоить?")
 const service2 = prompt("Какой дополнительный тип услуги нужен?");
-const servicePrice2 = +prompt("Сколько это будет стоить?")
+const servicePrice2 = +prompt("Сколько это будет стоить?");
+let fullPrice;
 
-
-const fullPrice = screenPrice + servicePrice1 + servicePrice2;
-
-const servicePercentPrice = Math.ceil(fullPrice - fullPrice * (rollback / 100));
-console.log("Стоимость проекта за вычетом отката: " + servicePercentPrice);
-
-
-switch (true) {
-    case fullPrice >= 30000:
-        console.log("Даем скидку в 10%");
-        break;
-    case fullPrice >= 15000 && fullPrice < 30000:
-        console.log("Даем скидку в 5%");
-        break;
-    case fullPrice >= 0 && fullPrice < 15000:
-        console.log("Скидка не предусмотрена");
-        break;
-    case fullPrice<0:
-        console.log("Что-то пошло не так");
-        break;        
+const allServicePrices = function getAllServicePrices() {
+    return servicePrice1 + servicePrice2;
 }
 
+function getRollbackMessage() {
+    switch (true) {
+        case fullPrice >= 30000:
+            return "Даем скидку в 10%";
+        case fullPrice >= 15000 && fullPrice < 30000:
+            return "Даем скидку в 5%";
+        case fullPrice >= 0 && fullPrice < 15000:
+            return "Скидка не предусмотрена";
+        case fullPrice < 0:
+            return "Что-то пошло не так";
 
-// console.log("title " + typeof title, ", fullPrice " + typeof fullPrice, ", adaptive " + typeof adaptive);
-// console.log(screens.length);
+    }
+}
 
-// console.log("Стоимость верстки экранов " + screenPrice + " рублей");
-// console.log("Стоимость разработки сайта " + fullPrice + " рублей");
+function getFullPrice() {
+    return screenPrice + allServicePrices();
+}
 
-// console.log(screens.toLocaleLowerCase().split(", "));
-// console.log("Процент отката посреднику за работу:" + fullPrice * (rollback / 100));
+function getTitle(titleOld) {
+    return title = titleOld.slice(0, 1).toUpperCase() + titleOld.slice(1, titleOld.length + 1).toLowerCase();
+}
+
+fullPrice = getFullPrice();
+
+const servicePercentPrice = function getServicePercentPrices() {
+    return fullPrice - fullPrice * (rollback / 100)
+}
+
+console.log(getTitle(title));
+
+console.log("title " + typeof title, ", fullPrice " + typeof fullPrice, ", adaptive " + typeof adaptive);
+console.log(screens.toLocaleLowerCase().split(", "));
+console.log("Скидка: " + getRollbackMessage());
+console.log("Стоимость за вычетом процента отката посреднику:" + servicePercentPrice());
+
