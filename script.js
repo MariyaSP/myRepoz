@@ -1,18 +1,52 @@
 'use strict';
 const rollback = 20;
 
-let title = prompt("Как называется ваш проект?").trim();
-const screens = prompt("Какие типы экранов нужно разработать?");
-const screenPrice = +prompt("Сколько будет стоить такая работа?");
-const adaptive = confirm("Нужен ли адаптив на сайте?");
-const service1 = prompt("Какой дополнительный тип услуги нужен?");
-const servicePrice1 = +prompt("Сколько это будет стоить?")
-const service2 = prompt("Какой дополнительный тип услуги нужен?");
-const servicePrice2 = +prompt("Сколько это будет стоить?");
-let fullPrice;
+let title;
+let screens;
+let screenPrice;
+let adaptive;
+let service1;
+let service2;
 
-const allServicePrices = function getAllServicePrices() {
-    return servicePrice1 + servicePrice2;
+
+const isNumber = function (num) {
+    return !isNaN(parseFloat(num)) && isFinite(num);
+}
+
+const asking = function () {
+    title = prompt("Как называется ваш проект?", "Калькулятор верстки").trim();
+    screens = prompt("Какие типы экранов нужно разработать?", "Первый, Второй, Третий");
+
+    do {
+        screenPrice = prompt("Сколько будет стоить такая работа?");
+    }
+    while (!isNumber(screenPrice))
+    
+    screenPrice = Number(screenPrice);
+    
+    adaptive = confirm("Нужен ли адаптив на сайте?");
+    
+}
+
+const allServicePrices = function () {
+    let sum = 0;
+    let servicePrice;
+    for (let i = 0; i < 2; i++) {
+        if (i === 0) {
+            service1 = prompt("Какой дополнительный тип услуги нужен?", "Кофе");
+        } else if (i === 1) {
+            service2 = prompt("Какой дополнительный тип услуги нужен?", "Бар");
+        }
+
+        do {
+            servicePrice = prompt("Сколько это будет стоить?");
+        }
+        while (!isNumber(servicePrice))
+        sum += Number(servicePrice);
+
+    }
+    return sum;
+
 }
 
 function getRollbackMessage() {
@@ -29,22 +63,30 @@ function getRollbackMessage() {
 }
 
 function getFullPrice() {
-    return screenPrice + allServicePrices();
+    // console.log("Цена доп услуг " + allServicePrices());
+    return Number(screenPrice) + allServicePrices();
 }
 
 function getTitle(titleOld) {
-    return title = titleOld.slice(0, 1).toUpperCase() + titleOld.slice(1, titleOld.length + 1).toLowerCase();
+    return titleOld.slice(0, 1).toUpperCase() + titleOld.slice(1, titleOld.length + 1).toLowerCase();
 }
-
-fullPrice = getFullPrice();
 
 const servicePercentPrice = function getServicePercentPrices() {
     return fullPrice - fullPrice * (rollback / 100)
 }
 
+const showTypeOf = function (variable) {
+    console.log(variable, typeof variable);
+}
+
+asking();
 console.log(getTitle(title));
-console.log("title " + typeof title, ", fullPrice " + typeof fullPrice, ", adaptive " + typeof adaptive);
+
+showTypeOf(title);
+showTypeOf(screenPrice);
+showTypeOf(adaptive);
+
+const fullPrice = getFullPrice();
 console.log(screens.toLocaleLowerCase().split(", "));
 console.log("Скидка: " + getRollbackMessage());
 console.log("Стоимость за вычетом процента отката посреднику:" + servicePercentPrice());
-
