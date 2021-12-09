@@ -1,25 +1,22 @@
 'use strict';
 const titleProject = document.getElementsByTagName('h1')[0];
-const buttons = document.getElementsByClassName('handler_btn');
+const stsrtBtn = document.getElementsByClassName('handler_btn')[0];
+const resetBtn = document.getElementsByClassName('handler_btn')[1];
 const butonPlus = document.querySelector('.screen-btn');
-const otherItems = document.querySelectorAll('.other-items');
-const firstOtherItems = [];
-const secondOtherItems = [];
-const typeItem = document.querySelector('.rollback').querySelector('input').getAttribute('type');
+const percentBtn = document.querySelectorAll('.other-items.percent');
+const numberBtn = document.querySelectorAll('.other-items.number');
+const inputRange = document.querySelector('.rollback input[type=range]');
 const span = document.querySelector('.rollback').querySelector('.range-value');
 const totalInput = document.getElementsByClassName('total-input');
+// const totalInput = document.getElementsByClassName('total-input')[0];
+const totalCountInput = document.getElementsByClassName('total-input')[1];
+const totalCountOtherInput = document.getElementsByClassName('total-input')[2];
+const totalFullCountInput = document.getElementsByClassName('total-input')[3];
+const totalCountRollbackInput = document.getElementsByClassName('total-input')[4];
 
 let screen = document.querySelectorAll('.screen');
 
-otherItems.forEach(function (item) {
-    item.classList.contains('percent') ? firstOtherItems.push(item) : secondOtherItems.push(item);
-});
-
-for (let i in totalInput) {
-    console.log(totalInput[i]);
-}
-
-console.log(screen);
+// console.log(screen);
 
 
 // const appData
