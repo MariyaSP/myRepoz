@@ -52,21 +52,17 @@ const appData = {
             if (select.value == '' || input.value.trim() === '') {
                 appData.isEmpty = true;
             }
-
-
         })
 
         console.log(appData.isEmpty);
         if (appData.isEmpty === false) {
             appData.start();
         }
-
     },
 
     addTitle: function () {
         document.title = title.textContent;
         appData.title = title.textContent
-
     },
 
     addPrices: function () {
@@ -84,7 +80,6 @@ const appData = {
             appData.fullPrice = Number(appData.screenPrice) + appData.servicePricesNumber + appData.servicePricesPercent;
         appData.servicePercentPrice = appData.fullPrice + appData.fullPrice * (appData.rollback / 100);
 
-        console.log(appData);
     },
 
     showResult: function () {
@@ -96,7 +91,6 @@ const appData = {
 
         totalFullCountInput.value = appData.fullPrice;
         totalCountRollbackInput.value = appData.servicePercentPrice;
-
 
     },
     addScreens: function () {
@@ -142,6 +136,9 @@ const appData = {
 
         inputRangeValue.textContent = (inputRange.value + '%');
         appData.rollback = inputRange.value;
+        if (totalCountRollbackInput.value) {
+            totalCountRollbackInput.value = appData.fullPrice + appData.fullPrice * (appData.rollback / 100);
+        }
 
     },
     start: function () {
