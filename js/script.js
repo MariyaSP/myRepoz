@@ -6,7 +6,7 @@ const butonPlus = document.querySelector('.screen-btn');
 const percentItems = document.querySelectorAll('.other-items.percent');
 const numberItems = document.querySelectorAll('.other-items.number');
 const inputRange = document.querySelector('.rollback input[type=range]');
-const inputRangeValue = document.querySelector('.rollback.range-value');
+const inputRangeValue = document.querySelector('.rollback').querySelector('.range-value');
 
 const total = document.getElementsByClassName('total-input')[0];
 const totalCountInput = document.getElementsByClassName('total-input')[1];
@@ -22,7 +22,7 @@ const appData = {
     screens: [],
     screenPrice: 0,
     adaptive: true,
-    rollback: 20,
+    rollback: 0,
     servicePricesPercent: 0,
     servicePricesNumber: 0,
     fullPrice: 0,
@@ -32,8 +32,8 @@ const appData = {
     isEmpty: false,
     init: function () {
         appData.addTitle();
-        butonPlus.addEventListener('click', appData.addScreenBlock)
-        // flag === true ? startBtn.addEventListener('click', appData.start) : startBtn.disabled = true;
+        butonPlus.addEventListener('click', appData.addScreenBlock);
+        inputRange.addEventListener('input', appData.addRange);
         startBtn.addEventListener('click', (e) => {
             e.preventDefault();
             appData.controller();
@@ -80,31 +80,22 @@ const appData = {
         for (let i in appData.servicesPercent) {
             appData.servicePricesPercent += appData.screenPrice * (appData.servicesPercent[i] / 100);
         }
+        appData.servicePercentPrice =
+            appData.fullPrice = Number(appData.screenPrice) + appData.servicePricesNumber + appData.servicePricesPercent;
+        appData.servicePercentPrice = appData.fullPrice + appData.fullPrice * (appData.rollback / 100);
 
-        appData.fullPrice = Number(appData.screenPrice) + appData.servicePricesNumber + appData.servicePricesPercent;
         console.log(appData);
     },
 
-    getRollbackMessage: function () {
-        switch (true) {
-            case appData.fullPrice >= 30000:
-                return "Даем скидку в 10%";
-            case appData.fullPrice >= 15000 && appData.fullPrice < 30000:
-                return "Даем скидку в 5%";
-            case appData.fullPrice >= 0 && appData.fullPrice < 15000:
-                return "Скидка не предусмотрена";
-            case appData.fullPrice < 0:
-                return "Что-то пошло не так";
-        }
-    },
     showResult: function () {
         total.value = appData.screenPrice;
         totalCountOtherInput.value = appData.servicePricesPercent + appData.servicePricesNumber;
         totalCountInput.value = appData.screens.reduce((summ, item) => {
             return summ + item.count;
-        },0);
-        console.dir(appData.screens);
+        }, 0);
+
         totalFullCountInput.value = appData.fullPrice;
+        totalCountRollbackInput.value = appData.servicePercentPrice;
 
 
     },
@@ -147,12 +138,17 @@ const appData = {
         const cloneScreen = screens[0].cloneNode(true);
         screens[screens.length - 1].after(cloneScreen);
     },
+    addRange: function () {
+
+        inputRangeValue.textContent = (inputRange.value + '%');
+        appData.rollback = inputRange.value;
+
+    },
     start: function () {
         appData.addScreens();
         appData.addServices();
         appData.addPrices();
         appData.showResult();
-
         // appData.logger();
     },
     logger: function () {
