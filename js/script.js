@@ -32,7 +32,6 @@ const appData = {
     isEmpty: false,
     init: function () {
         appData.addTitle();
-
         butonPlus.addEventListener('click', appData.addScreenBlock)
         // flag === true ? startBtn.addEventListener('click', appData.start) : startBtn.disabled = true;
         startBtn.addEventListener('click', (e) => {
