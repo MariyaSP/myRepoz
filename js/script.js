@@ -13,7 +13,11 @@ const totalCountInput = document.getElementsByClassName('total-input')[1];
 const totalCountOtherInput = document.getElementsByClassName('total-input')[2];
 const totalFullCountInput = document.getElementsByClassName('total-input')[3];
 const totalCountRollbackInput = document.getElementsByClassName('total-input')[4];
-const cmsItem = document.querySelector('cms-open');
+const cmsItem = document.querySelector('#cms-open');
+const cmsSelect = document.querySelector('.hidden-cms-variants');
+const cmsSelectItems = cmsSelect.querySelector('#cms-select');
+const cmsInputItems = cmsSelect.querySelector('.main-controls__input');
+
 
 let screens = document.querySelectorAll('.screen');
 
@@ -30,6 +34,7 @@ const appData = {
     servicesPercent: {},
     servicesNumber: {},
     isEmpty: false,
+    cms: 1,
     init: function () {
         this.addTitle();
         butonPlus.addEventListener('click', this.addScreenBlock);
@@ -42,6 +47,17 @@ const appData = {
             e.preventDefault();
             this.reset();
         });
+
+        cmsItem.addEventListener('change', (e) => {
+            e.preventDefault();
+            this.cmsShow();
+        });
+        cmsSelectItems.addEventListener('change', (e) => {
+            e.preventDefault();
+            cmsSelectItems.value == "other" ? cmsInputItems.style.display = "block" : cmsInputItems.style.display = "none";
+
+        });
+
 
     },
     controller: function () {
@@ -76,9 +92,22 @@ const appData = {
         }
         for (let i in appData.servicesPercent) {
             this.servicePricesPercent += this.screenPrice * (this.servicesPercent[i] / 100);
+
         }
-        this.servicePercentPrice = this.fullPrice = Number(this.screenPrice) + this.servicePricesNumber + this.servicePricesPercent;
-        this.servicePercentPrice = this.fullPrice + this.fullPrice * (this.rollback / 100);
+
+
+        cmsSelectItems.value == "50" ? this.cms = 50 : this.cms = +cmsInputItems.querySelector('input').value;
+        console.log(this.cms);
+
+        this.fullPrice = (Number(this.screenPrice) + this.servicePricesNumber + this.servicePricesPercent)
+        this.fullPrice += this.fullPrice * (this.cms / 100);
+
+        console.log(this.screenPrice);
+        console.log(this.servicePricesNumber);
+        console.log(this.servicePricesPercent);
+
+
+        this.servicePercentPrice = (this.fullPrice - this.fullPrice * (this.rollback / 100));
 
     },
 
@@ -98,9 +127,14 @@ const appData = {
             const input = screen.querySelector('input');
             select.disabled = true;
             input.disabled = true;
+            cmsSelectItems.disabled = true;
+            cmsInputItems.querySelector('input').disabled = true;
+
         })
         startBtn.style.display = "none";
         resetBtn.style.display = "";
+        
+
 
     },
     addScreens: function () {
@@ -148,9 +182,15 @@ const appData = {
 
         inputRangeValue.textContent = (inputRange.value + '%');
         this.rollback = inputRange.value;
-        if (totalCountRollbackInput.value!='0') {
+        if (totalCountRollbackInput.value != '0') {
             totalCountRollbackInput.value = this.fullPrice - this.fullPrice * (this.rollback / 100);
         }
+
+    },
+    cmsShow: function () {
+
+        cmsItem.checked ? cmsSelect.style.display = 'flex' : cmsSelect.style.display = 'none';
+        cmsSelect == "50" ? appData.cms = 0.5 : appData.cms = +cmsInputItems.querySelector('input').value / 100;
 
     },
     start: function () {
@@ -178,6 +218,11 @@ const appData = {
                 select.selectedIndex = 0;
                 select.disabled = false;
                 input.disabled = false;
+                cmsSelectItems.disabled = false;
+                cmsInputItems.querySelector('input').disabled = false;
+                this.cms = 1;
+                cmsItem.checked = false;
+                this.cmsShow();
 
             }
             else {
@@ -193,8 +238,12 @@ const appData = {
             inputRangeValue.textContent = '0%';
             totalCountRollbackInput.value = '0';
 
-            startBtn.style.display = "";
-            resetBtn.style.display = "none";
+            startBtn.style.display = '';
+            resetBtn.style.display = 'none';
+            cmsInputItems.style.display = 'none';
+            cmsInputItems.querySelector('input').value = '';
+            cmsSelectItems.selectedIndex = 0;
+
         })
 
     },
