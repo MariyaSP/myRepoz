@@ -13,7 +13,7 @@ const totalCountInput = document.getElementsByClassName('total-input')[1];
 const totalCountOtherInput = document.getElementsByClassName('total-input')[2];
 const totalFullCountInput = document.getElementsByClassName('total-input')[3];
 const totalCountRollbackInput = document.getElementsByClassName('total-input')[4];
-
+const cmsItem = document.querySelector('cms-open');
 
 let screens = document.querySelectorAll('.screen');
 
@@ -141,6 +141,7 @@ const appData = {
     },
     addScreenBlock: function () {
         const cloneScreen = screens[0].cloneNode(true);
+        cloneScreen.querySelector('input').value = '';
         screens[screens.length - 1].after(cloneScreen);
     },
     addRange: function () {
@@ -148,7 +149,7 @@ const appData = {
         inputRangeValue.textContent = (inputRange.value + '%');
         this.rollback = inputRange.value;
         if (totalCountRollbackInput.value!='0') {
-            totalCountRollbackInput.value = this.fullPrice + this.fullPrice * (this.rollback / 100);
+            totalCountRollbackInput.value = this.fullPrice - this.fullPrice * (this.rollback / 100);
         }
 
     },
